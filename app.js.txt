@@ -1,0 +1,161 @@
+// ============================================================
+//  APP.JS — Chat UI Controller
+//  Public Place Smart Guide System
+// ============================================================
+
+const chatArea = document.getElementById("chat-area");
+const userInput = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
+const placeSelect = document.getElementById("place-select");
+
+// ─── Initialization ─────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+    showWelcome();
+    userInput.focus();
+});
+
+placeSelect.addEventListener("change", () => {
+    chatArea.innerHTML = "";
+    showWelcome();
+    userInput.focus();
+});
+
+sendBtn.addEventListener("click", handleSend);
+userInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") handleSend();
+});
+
+// ─── Welcome Card ───────────────────────────────────────────
+function showWelcome() {
+    const place = KNOWLEDGE_BASE[placeSelect.value];
+    const placeEmojis = { college: "🎓", railway: "🚆", hospital: "🏥" };
+    const emoji = placeEmojis[placeSelect.value] || "🗺️";
+
+    const card = document.createElement("div");
+    card.className = "welcome-card";
+    card.innerHTML = `
+    <span class="welcome-emoji">${emoji}</span>
+    <h2>Welcome to ${place.name}</h2>
+    <p>I'm your Smart Guide! Ask me about locations, timings, or anything else.<br/>
+    Try typing a question below or tap a quick suggestion.</p>
+  `;
+    chatArea.appendChild(card);
+
+    // Quick reply buttons
+    const quickReplies = document.createElement("div");
+    quickReplies.className = "quick-replies";
+
+    const suggestions = getSuggestionsForPlace(placeSelect.value);
+    suggestions.forEach((text) => {
+        const btn = document.createElement("button");
+        btn.className = "quick-reply-btn";
+        btn.textContent = text;
+        btn.addEventListener("click", () => {
+            userInput.value = text;
+            handleSend();
+        });
+        quickReplies.appendChild(btn);
+    });
+
+    chatArea.appendChild(quickReplies);
+    scrollToBottom();
+}
+
+function getSuggestionsForPlace(placeType) {
+    const suggestions = {
+        college: ["Where is the library?", "Canteen timings?", "Nearest washroom?",
+                  "Lab info", "Placement cell"],
+        railway: ["Platform info", "Where to buy tickets?", "Nearest food stall?",
+                  "Cloak room", "Bus timings?"],
+        hospital: ["Where is OPD?", "Emergency department", "Pharmacy location?",
+                   "Lab tests", "Parking info"]
+    };
+    return suggestions[placeType] || ["Hello", "Help"];
+}
+
+// ─── Send Message Handler ───────────────────────────────────
+function handleSend() {
+    const text = userInput.value.trim();
+    if (!text) return;
+
+    // Remove any existing quick replies
+    document.querySelectorAll(".quick-replies").forEach((el) => el.remove());
+
+    // Add user message
+    appendMessage(text, "user");
+    userInput.value = "";
+    userInput.focus();
+
+    // Show typing indicator, then respond
+    showTypingIndicator();
+
+    const delay = 400 + Math.random() * 600; // 400–1000ms
+    setTimeout(() => {
+        removeTypingIndicator();
+        const placeType = placeSelect.value;
+        const response = processQuery(text, placeType);
+        appendMessage(response, "bot");
+        scrollToBottom();
+    }, delay);
+}
+
+// ─── Append Message ─────────────────────────────────────────
+function appendMessage(text, sender) {
+    const msg = document.createElement("div");
+    msg.className = `message ${sender}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.textContent = sender === "bot" ? "🤖" : "👤";
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    bubble.innerHTML = formatText(text);
+
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+    chatArea.appendChild(msg);
+    scrollToBottom();
+}
+
+// ─── Text Formatter (Markdown-lite) ─────────────────────────
+function formatText(text) {
+    let formatted = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    formatted = formatted.replace(/\n/g, "<br/>");
+    formatted = formatted.replace(/^• (.+)$/gm, '<span class="line">• $1</span>');
+    return formatted;
+}
+
+// ─── Typing Indicator ───────────────────────────────────────
+function showTypingIndicator() {
+    const indicator = document.createElement("div");
+    indicator.className = "typing-indicator";
+    indicator.id = "typing-indicator";
+
+    const avatar = document.createElement("div");
+    avatar.className = "message-avatar";
+    avatar.style.background = "linear-gradient(135deg, var(--accent), #8b5cf6)";
+    avatar.style.boxShadow = "0 2px 12px var(--accent-glow)";
+    avatar.textContent = "🤖";
+
+    const dots = document.createElement("div");
+    dots.className = "typing-dots";
+    dots.innerHTML = "<span></span><span></span><span></span>";
+
+    indicator.appendChild(avatar);
+    indicator.appendChild(dots);
+    chatArea.appendChild(indicator);
+    scrollToBottom();
+}
+
+function removeTypingIndicator() {
+    const indicator = document.getElementById("typing-indicator");
+    if (indicator) indicator.remove();
+}
+
+// ─── Scroll to Bottom ───────────────────────────────────────
+function scrollToBottom() {
+    requestAnimationFrame(() => {
+        chatArea.scrollTop = chatArea.scrollHeight;
+    });
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Public Place Smart Guide — an NLP-powered chatbot that helps visitors navigate colleges, railway stations, hospitals, and more." />
+  <title>Smart Guide — Public Place Navigator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Background Blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <!-- Main Container -->
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <span class="logo-icon">🗺️</span>
+        <div>
+          <h1>Smart Guide</h1>
+          <p class="subtitle">Public Place Navigator</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <label for="place-select" class="place-label">📍 Place</label>
+        <select id="place-select">
+          <option value="college">🎓 College Campus</option>
+          <option value="railway">🚆 Railway Station</option>
+          <option value="hospital">🏥 Hospital</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Chat Area -->
+    <main class="chat-area" id="chat-area">
+      <!-- Messages will be injected here -->
+    </main>
+
+    <!-- Input Bar -->
+    <footer class="input-bar">
+      <div class="input-wrapper">
+        <input type="text" id="user-input" placeholder="Ask me anything…"
+          autocomplete="off" />
+        <button id="send-btn" aria-label="Send message">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <p class="powered-by">Powered by <strong>Compromise.js</strong> NLP Engine</p>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/compromise"></script>
+  <script src="knowledge.js"></script>
+  <script src="nlp.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

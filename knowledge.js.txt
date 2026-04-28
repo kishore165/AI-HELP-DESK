@@ -1,0 +1,234 @@
+// ============================================================
+//  KNOWLEDGE BASE — Public Place Smart Guide System
+//  Each place has entities with: description, location, timings, tips
+// ============================================================
+
+const KNOWLEDGE_BASE = {
+
+  // COLLEGE CAMPUS
+  college: {
+    name: "College Campus",
+    welcome: "Welcome to the College Campus! I can help you find classrooms, labs, the library, canteen, and more.",
+    entities: {
+      library: {
+        keywords: ["library", "books", "reading room", "study room", "reading hall"],
+        description: "The Central Library has over 50,000 books, journals, and digital resources across 3 floors.",
+        location: "Building A, 2nd Floor — take the main entrance and go straight, turn left at the corridor.",
+        timings: "Mon–Fri: 8:00 AM – 8:00 PM | Sat: 9:00 AM – 5:00 PM | Sun: Closed",
+        tips: "Carry your student ID for entry. Silent zones are on the 3rd floor."
+      },
+      canteen: {
+        keywords: ["canteen", "cafeteria", "food", "eat", "lunch", "breakfast", "snack", "mess", "dining"],
+        description: "The college canteen serves affordable meals, snacks, and beverages.",
+        location: "Behind Building B, Ground Floor — follow the path past the basketball court.",
+        timings: "Mon–Sat: 7:30 AM – 7:00 PM | Sun: 8:00 AM – 2:00 PM",
+        tips: "Try the special thali for ₹60. Peak hours are 12:30–1:30 PM."
+      },
+      washroom: {
+        keywords: ["washroom", "toilet", "restroom", "bathroom", "loo", "wc"],
+        description: "Clean washrooms are available in every building on each floor.",
+        location: "Nearest: Building A Ground Floor (near entrance), Building B 1st Floor (near staircase).",
+        timings: "Available 24/7",
+        tips: "Washrooms near the library (Building A, 2nd Floor) are usually less crowded."
+      },
+      principal: {
+        keywords: ["principal", "principal office", "director", "head", "admin", "administration", "dean"],
+        description: "The Principal's Office handles academic administration and student grievances.",
+        location: "Building A, 1st Floor, Room 101.",
+        timings: "Mon–Fri: 10:00 AM – 4:00 PM (by appointment preferred)",
+        tips: "Book an appointment through the college website or visit the admin desk first."
+      },
+      lab: {
+        keywords: ["lab", "laboratory", "computer lab", "science lab", "physics lab", "chemistry lab", "computer"],
+        description: "The campus has Computer Labs, Physics Labs, Chemistry Labs, and Electronics Labs.",
+        location: "Computer Lab: Building C, 2nd Floor | Science Labs: Building D, 1st & 2nd Floor.",
+        timings: "Mon–Fri: 9:00 AM – 5:00 PM | Sat: 9:00 AM – 1:00 PM",
+        tips: "Lab coats are mandatory for science labs. Bring your own pen drives for the computer lab."
+      },
+      parking: {
+        keywords: ["parking", "park", "vehicle", "bike", "car", "two wheeler", "four wheeler"],
+        description: "Separate parking zones for students, staff, and visitors.",
+        location: "Student Parking: East Gate | Staff Parking: West Gate | Visitor Parking: Main Gate.",
+        timings: "Open during campus hours: 7:00 AM – 9:00 PM",
+        tips: "Two-wheeler parking is free. Four-wheeler parking costs ₹20/day for visitors."
+      },
+      hostel: {
+        keywords: ["hostel", "dormitory", "dorm", "accommodation", "room", "stay", "residence"],
+        description: "Boys' and Girls' hostels with single and shared room options.",
+        location: "Boys' Hostel: North Campus | Girls' Hostel: South Campus (behind sports ground).",
+        timings: "Entry by 9:00 PM (weekdays) | 10:00 PM (weekends)",
+        tips: "Contact the hostel warden at ext. 201 for room allotment."
+      },
+      sports: {
+        keywords: ["sports", "ground", "playground", "gym", "stadium", "cricket", "football", "basketball"],
+        description: "Outdoor grounds for cricket, football, and athletics. Indoor gym and basketball court.",
+        location: "Sports Ground: South Campus | Indoor Gym: Building E, Ground Floor.",
+        timings: "Outdoor: 6:00 AM – 7:00 PM | Gym: 6:00 AM – 9:00 PM",
+        tips: "Gym membership is ₹500/semester for students. Carry sports shoes."
+      },
+      exam: {
+        keywords: ["exam", "examination", "exam hall", "exam cell", "result", "marksheet"],
+        description: "The Examination Cell manages exams, results, and certificate issuance.",
+        location: "Building A, Ground Floor, Room 005.",
+        timings: "Mon–Fri: 10:00 AM – 3:00 PM",
+        tips: "Results are posted on the college website. Carry your hall ticket for any queries."
+      },
+      placement: {
+        keywords: ["placement", "placement cell", "job", "career", "interview", "recruitment", "internship"],
+        description: "The Training & Placement Cell coordinates campus drives and internships.",
+        location: "Building A, 3rd Floor, Room 301.",
+        timings: "Mon–Fri: 10:00 AM – 5:00 PM",
+        tips: "Register on the placement portal and keep your resume updated."
+      }
+    }
+  },
+
+  // RAILWAY STATION
+  railway: {
+    name: "Railway Station",
+    welcome: "Welcome to the Railway Station! I can help you find platforms, ticket counters, waiting rooms, and more.",
+    entities: {
+      platform: {
+        keywords: ["platform", "train", "track", "railway platform", "which platform"],
+        description: "The station has 6 platforms connected by a foot overbridge and escalators.",
+        location: "Platforms 1–3: East side (main entrance) | Platforms 4–6: West side (use the overbridge).",
+        timings: "Platforms are accessible 24/7.",
+        tips: "Check the electronic display boards near the entrance for real-time platform assignments."
+      },
+      ticket: {
+        keywords: ["ticket", "ticket counter", "booking", "reservation", "book", "fare", "price", "cost"],
+        description: "General ticket counters and a computerized reservation center are available.",
+        location: "General Tickets: Main entrance, Window 1–4 | Reservation: 1st Floor, Room 102.",
+        timings: "General: 6:00 AM – 10:00 PM | Reservation: 8:00 AM – 8:00 PM",
+        tips: "Use the UTS mobile app or IRCTC website to skip long queues."
+      },
+      washroom: {
+        keywords: ["washroom", "toilet", "restroom", "bathroom", "loo", "wc", "sulabh"],
+        description: "Pay-and-use washrooms and free washrooms available on the station.",
+        location: "Free washrooms: Platform 1 (near waiting room) | Pay-and-use: Main entrance lobby (₹5).",
+        timings: "Available 24/7",
+        tips: "Pay-and-use washrooms are generally cleaner. Carry tissue paper."
+      },
+      waiting: {
+        keywords: ["waiting room", "waiting", "wait", "rest", "lounge", "retiring room"],
+        description: "Upper class and general waiting rooms with seating, fans, and charging points.",
+        location: "General Waiting Room: Platform 1, near Ticket Counter | Upper Class: 1st Floor.",
+        timings: "Available 24/7 (with valid ticket)",
+        tips: "Upper class waiting room has AC. Show your ticket at the entrance."
+      },
+      food: {
+        keywords: ["food", "restaurant", "eat", "canteen", "snack", "tea", "coffee", "stall", "meal"],
+        description: "Multiple food stalls, a railway canteen, and IRCTC food plaza available.",
+        location: "Food stalls: Platform 1 & 3 | IRCTC Food Plaza: Main building, Ground Floor.",
+        timings: "Food stalls: 5:00 AM – 11:00 PM | Food Plaza: 7:00 AM – 10:00 PM",
+        tips: "Order through IRCTC e-Catering for delivery to your seat on the train."
+      },
+      cloak: {
+        keywords: ["cloak room", "cloakroom", "luggage", "bag", "locker", "storage", "keep bag"],
+        description: "Cloak room facility for storing luggage safely.",
+        location: "Platform 1, near the main entrance — look for the 'Cloak Room' signboard.",
+        timings: "6:00 AM – 10:00 PM",
+        tips: "Bags must be locked. Rate is ₹20/bag for 24 hours. Keep the receipt safe."
+      },
+      enquiry: {
+        keywords: ["enquiry", "inquiry", "information", "info", "help desk", "help counter", "train status"],
+        description: "Railway Enquiry Counter for train timings, delays, and general information.",
+        location: "Main entrance lobby, Counter 1.",
+        timings: "Available 24/7",
+        tips: "Call 139 for automated train enquiry. Use the RailYatri or NTES app for live tracking."
+      },
+      atm: {
+        keywords: ["atm", "cash", "money", "bank", "withdraw"],
+        description: "SBI and ICICI ATMs are available inside the station premises.",
+        location: "SBI ATM: Main entrance (right side) | ICICI ATM: Platform 1 (near waiting room).",
+        timings: "Available 24/7",
+        tips: "Carry your own card. SBI ATM tends to be less busy during early morning."
+      },
+      bus: {
+        keywords: ["bus", "bus stop", "bus stand", "bus station", "bus timings", "local bus", "transport"],
+        description: "The city bus stand is located right outside the railway station.",
+        location: "Exit from the main entrance, walk 100m to the left — bus stand is on the main road.",
+        timings: "City buses: 5:30 AM – 10:30 PM (every 10–15 min on major routes)",
+        tips: "Bus routes 12, 45, and 78 connect to major parts of the city."
+      }
+    }
+  },
+
+  // HOSPITAL
+  hospital: {
+    name: "Hospital",
+    welcome: "Welcome to the Hospital. I can help you find departments, OPD counters, pharmacy, emergency, and more.",
+    entities: {
+      opd: {
+        keywords: ["opd", "outpatient", "out patient", "consultation", "doctor", "checkup", "appointment"],
+        description: "The OPD (Out-Patient Department) handles regular consultations and follow-ups.",
+        location: "Main Building, Ground Floor — Registration Counter is right at the entrance.",
+        timings: "Mon–Sat: 9:00 AM – 4:00 PM | Sun & Holidays: Emergency OPD only",
+        tips: "Arrive 30 min early for registration. Carry previous medical records."
+      },
+      emergency: {
+        keywords: ["emergency", "casualty", "urgent", "accident", "trauma", "ambulance", "critical"],
+        description: "24/7 Emergency & Trauma Center for critical and urgent medical cases.",
+        location: "Separate building on the left side of the main entrance — look for red 'EMERGENCY' signboard.",
+        timings: "Available 24/7",
+        tips: "Ambulance helpline: 108. Triage system is followed — critical cases attended first."
+      },
+      pharmacy: {
+        keywords: ["pharmacy", "medicine", "medical store", "drug", "tablet", "chemist"],
+        description: "In-campus pharmacy with a wide range of medicines at subsidized rates.",
+        location: "Main Building, Ground Floor — beside the OPD registration counter.",
+        timings: "8:00 AM – 9:00 PM (Daily) | Emergency pharmacy: 24/7",
+        tips: "Generic medicines are available at lower prices. Carry your prescription."
+      },
+      icu: {
+        keywords: ["icu", "intensive care", "critical care", "ccunit"],
+        description: "The ICU provides critical care with advanced monitoring equipment.",
+        location: "Main Building, 3rd Floor — access restricted to authorized persons only.",
+        timings: "Visiting hours: 11:00 AM – 12:00 PM & 5:00 PM – 6:00 PM",
+        tips: "Only 1 visitor allowed at a time. Sanitize hands before entry."
+      },
+      cafeteria: {
+        keywords: ["cafeteria", "canteen", "food", "eat", "restaurant", "lunch", "snack", "tea", "coffee"],
+        description: "Hospital cafeteria serving hygienic meals, snacks, and beverages.",
+        location: "Annexe Building, Ground Floor — take the corridor past the garden.",
+        timings: "7:00 AM – 8:00 PM (Daily)",
+        tips: "Patient meals are served in rooms. Cafeteria is for visitors and staff."
+      },
+      washroom: {
+        keywords: ["washroom", "toilet", "restroom", "bathroom", "loo", "wc"],
+        description: "Washrooms available on every floor of the main building and in the annexe.",
+        location: "Nearest: Main Building Ground Floor (near entrance) & 1st Floor (near lifts).",
+        timings: "Available 24/7",
+        tips: "Accessible washrooms for differently-abled persons are on the Ground Floor."
+      },
+      parking: {
+        keywords: ["parking", "park", "vehicle", "bike", "car", "ambulance parking"],
+        description: "Multi-level parking with designated areas for patients, visitors, and ambulances.",
+        location: "Main Parking: Opposite the main entrance | Emergency Parking: Near Emergency Dept.",
+        timings: "Available 24/7",
+        tips: "First 30 minutes free. ₹20/hr for cars, ₹10/hr for two-wheelers after that."
+      },
+      lab: {
+        keywords: ["lab", "laboratory", "pathology", "blood test", "xray", "x-ray", "scan", "mri", "ct scan"],
+        description: "Diagnostic labs for blood tests, X-rays, MRI, CT scans, and other investigations.",
+        location: "Pathology Lab: Main Building, 1st Floor | Radiology: 2nd Floor.",
+        timings: "Mon–Sat: 7:00 AM – 6:00 PM | Emergency lab: 24/7",
+        tips: "Fasting is required for some blood tests. Reports available within 4–6 hours."
+      },
+      billing: {
+        keywords: ["billing", "bill", "payment", "accounts", "insurance", "cashier", "pay"],
+        description: "Billing & Accounts department handles payments, insurance claims, and discharge billing.",
+        location: "Main Building, Ground Floor — Window 5 & 6 near the main entrance.",
+        timings: "Mon–Sat: 8:00 AM – 7:00 PM | Sun: 9:00 AM – 2:00 PM",
+        tips: "UPI, cards, and cash accepted. Carry insurance card/TPA details."
+      },
+      blood_bank: {
+        keywords: ["blood bank", "blood", "donate", "donation", "transfusion"],
+        description: "Hospital Blood Bank for blood donation and transfusion services.",
+        location: "Annexe Building, 1st Floor.",
+        timings: "Mon–Sat: 9:00 AM – 5:00 PM | Emergency: 24/7",
+        tips: "Walk-in donations welcome. Donors receive a free health check-up."
+      }
+    }
+  }
+};

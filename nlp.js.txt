@@ -1,0 +1,144 @@
+// ============================================================
+//  NLP ENGINE — Public Place Smart Guide System
+//  Uses Compromise.js for tokenization & normalization
+//  Custom intent classification + entity extraction
+// ============================================================
+
+// Intent Patterns
+const INTENT_PATTERNS = {
+    greet: {
+        patterns: ["hello", "hi", "hey", "good morning", "good afternoon",
+                   "good evening", "namaste", "hola", "sup", "yo", "howdy"],
+        response: (placeName) =>
+          `Hello! 👋 Welcome to ${placeName}. How can I help you today? Try asking things like:
+          \n• "Where is the library?"\n• "Washroom nearby?"\n• "Canteen timings?"`
+    },
+    farewell: {
+        patterns: ["bye", "goodbye", "see you", "thanks", "thank you",
+                   "thank", "ok bye", "take care", "good night", "tata"],
+        response: () => "You're welcome! 😊 Have a great day. Feel free to come back anytime!"
+    },
+    help: {
+        patterns: ["help", "what can you do", "how to use", "guide",
+                   "options", "menu", "commands", "features"],
+        response: (placeName) =>
+          `🤖 I'm your Smart Guide for ${placeName}! Here's what I can help with:
+          \n\n📍 **Find locations** — "Where is the canteen?"
+          \n⏰ **Get timings** — "Library timings?"
+          \nℹ️ **Get info** — "Tell me about the lab"
+          \n💡 **Get tips** — "Any tips for parking?"
+          \n\nJust type your question naturally!`
+    }
+};
+
+// ─── NLP Processor ──────────────────────────────────────────
+
+function processQuery(userInput, placeType) {
+    const place = KNOWLEDGE_BASE[placeType];
+    if (!place) return "Sorry, I don't have information about this place yet.";
+
+    // Use Compromise.js for normalization
+    const doc = nlp(userInput);
+    const normalized = doc.normalize({ plurals: true, verbs: true })
+                          .out("text").toLowerCase().trim();
+    const terms = doc.terms().out("array").map(t => t.toLowerCase());
+
+    // 1) Check greeting / farewell / help intents first
+    for (const [intentName, intent] of Object.entries(INTENT_PATTERNS)) {
+        for (const pattern of intent.patterns) {
+            if (normalized.includes(pattern) || terms.includes(pattern)) {
+                return intent.response(place.name);
+            }
+        }
+    }
+
+    // 2) Entity extraction — find which entity the user is asking about
+    const matchedEntity = findEntity(normalized, terms, place.entities);
+
+    if (!matchedEntity) {
+        return suggestEntities(place);
+    }
+
+    // 3) Detect what kind of info the user wants
+    const infoType = detectInfoType(normalized, terms);
+
+    // 4) Build the response
+    return buildResponse(matchedEntity, infoType);
+}
+
+// ─── Entity Finder ──────────────────────────────────────────
+
+function findEntity(normalized, terms, entities) {
+    let bestMatch = null;
+    let bestScore = 0;
+
+    for (const [entityKey, entity] of Object.entries(entities)) {
+        for (const keyword of entity.keywords) {
+            // Exact phrase match gets highest score
+            if (normalized.includes(keyword)) {
+                const score = keyword.split(" ").length * 2;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = entity;
+                }
+            }
+            // Single word match in terms
+            else if (keyword.split(" ").length === 1 && terms.includes(keyword)) {
+                if (1 > bestScore) {
+                    bestScore = 1;
+                    bestMatch = entity;
+                }
+            }
+        }
+    }
+    return bestMatch;
+}
+
+// ─── Info-Type Detector ─────────────────────────────────────
+
+function detectInfoType(normalized, terms) {
+    const timingWords = ["timing", "timings", "time", "hours", "open",
+                         "close", "when", "schedule", "available"];
+    const locationWords = ["where", "location", "direction", "how to reach",
+                           "find", "way", "near", "nearest", "nearby", "route", "map"];
+    const tipWords = ["tip", "tips", "advice", "suggest", "suggestion",
+                      "recommend", "note", "remember"];
+
+    for (const w of timingWords) {
+        if (normalized.includes(w) || terms.includes(w)) return "timings";
+    }
+    for (const w of locationWords) {
+        if (normalized.includes(w) || terms.includes(w)) return "location";
+    }
+    for (const w of tipWords) {
+        if (normalized.includes(w) || terms.includes(w)) return "tips";
+    }
+    return "all"; // default: show everything
+}
+
+// ─── Response Builder ───────────────────────────────────────
+
+function buildResponse(entity, infoType) {
+    if (infoType === "timings") {
+        return `⏰ **Timings**\n${entity.timings}\n\n💡 ${entity.tips}`;
+    }
+    if (infoType === "location") {
+        return `📍 **Location**\n${entity.location}\n\n💡 ${entity.tips}`;
+    }
+    if (infoType === "tips") {
+        return `💡 **Tips**\n${entity.tips}`;
+    }
+    // Show full info
+    return `ℹ️ ${entity.description}\n\n📍 **Location:** ${entity.location}\n\n⏰ **Timings:** ${entity.timings}\n\n💡 **Tip:** ${entity.tips}`;
+}
+
+// ─── Suggestion when no entity matched ──────────────────────
+
+function suggestEntities(place) {
+    const entityNames = Object.keys(place.entities).map(k => {
+        const name = place.entities[k].keywords[0];
+        return name.charAt(0).toUpperCase() + name.slice(1);
+    });
+    const list = entityNames.map(n => `• ${n}`).join("\n");
+    return `🤔 I'm not sure what you're looking for. Here are things I can help you with at **${place.name}**:\n\n${list}\n\nTry asking: "Where is the canteen?" or "Library timings?"`;
+}
